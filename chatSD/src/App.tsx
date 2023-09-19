@@ -1,19 +1,20 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { BsChatDotsFill } from "react-icons/bs";
-import Online from "./components/online";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
   useNavigate,
 } from "react-router-dom";
+import Home from "./components/home";
 
 function App() {
   const [login, setLogin] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleLoginSubmit = () => {
-    alert(login);
+    setLogin(login);
+    navigate("/home");
   };
 
   const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,4 +60,21 @@ function App() {
   );
 }
 
-export default App;
+function UserRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/home" element={<Home />} />
+    </Routes>
+  );
+}
+
+function Main() {
+  return (
+    <Router>
+      <UserRoutes />
+    </Router>
+  );
+}
+
+export default Main;

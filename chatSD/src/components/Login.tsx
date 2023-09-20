@@ -2,13 +2,20 @@ import { ChangeEvent, useState } from "react";
 import { BsChatDotsFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+type LoginProps = {
+  onLoginChange: (login: string) => void;
+};
+
+const Login = (props: LoginProps) => {
   const [login, setLogin] = useState<string>("");
   const navigate = useNavigate();
 
   const handleLoginSubmit = () => {
     setLogin(login);
+    alert(login);
     navigate("/home");
+
+    // props.onLoginChange(login);
   };
 
   const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +40,11 @@ const Login = () => {
               placeholder="Digite seu Login"
               value={login}
               onChange={handleLoginChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleLoginSubmit();
+                }
+              }}
             />
           </div>
           <div>

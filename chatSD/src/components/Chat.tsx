@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CgLogOut } from "react-icons/cg";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -6,12 +6,21 @@ import { AiOutlineHome, AiOutlineSend } from "react-icons/ai";
 
 const Chat = () => {
   const [message, setMessage] = useState<string>("");
+  const [messages, setMessages] = useState<string[]>([]);
+  const chatMessagesRef = useRef<HTMLDivElement | null>(null);
   const handleLogout = () => {};
   const handleHomepage = () => {};
   const handleSend = () => {
     alert(message);
+    setMessages([...messages, message]); // Adicione a mensagem ao estado
     setMessage("");
   };
+
+  useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -55,7 +64,16 @@ const Chat = () => {
               </div>
             </div>
             <div className="flex flex-col h-[100%] w-[75%]">
-              <div className="bg-emerald-600 rounded-tr-lg border-2 border-gray-400 h-[92%] w-[100%]"></div>
+              <div className="bg-emerald-600 flex flex-col space-y-4 items-end justify-end rounded-tr-lg border-2 border-gray-400 h-[92%] w-[100%]">
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center w-[40%] min-h-[10%] bg-gray-200 rounded-md"
+                  >
+                    <span className="pl-2">{msg}</span>
+                  </div>
+                ))}
+              </div>
               <div className="bg-gray-200 h-[8%] w-[100%] border-x-2 border-gray-400 rounded-br-lg flex items-center justify-evenly">
                 <input
                   className="bg-gray-300 rounded-xl h-[75%] w-[80%] text-justify"
